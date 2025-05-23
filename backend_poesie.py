@@ -22,17 +22,16 @@ def salva_poesie(poesie):
 @app.route("/api/poesie", methods=["POST"])
 def ricevi_poesia():
     testo = request.form.get("testo")
+    nome = request.form.get("nome", "Anonimo")
     if not testo:
         return jsonify({"errore": "Testo mancante"}), 400
     poesie = carica_poesie()
-    poesie.append({"testo": testo})
+    poesie.append({
+        "nome": nome,
+        "testo": testo
+    })
     salva_poesie(poesie)
     return jsonify({"messaggio": "Poesia salvata"}), 200
-
-@app.route("/api/poesie", methods=["GET"])
-def leggi_poesie():
-    poesie = carica_poesie()
-    return jsonify(poesie), 200
 
 @app.route("/")
 def index():
